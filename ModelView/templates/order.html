@@ -1,0 +1,124 @@
+{% include "header.html" %}
+{% load staticfiles %}
+<section class="order-container">
+    <h1>My Orders</h1>
+	<div class="orders-history">
+        <div class="current-orders">
+            {% for order in orders %}
+                <div class="card">
+                    <div class="row d-flex justify-content-between px-3 top">
+                        <div class="d-flex">
+                            <h5>ORDER ID
+                                <a class="provide-btn" href="/order-lists/{{order.order_id}}">
+                                    <span class="text-primary font-weight-bold"># {{order.order_id}}</span>
+                                </a>
+                            </h5>
+                        </div>
+                        <div class=" text-sm-right">
+                            {% if order.is_purchased is True %}
+                                <p class="mb-0" style="font-size: 16px;">Purchased Date : <span style="font-size: 15px;">{{ order.purchased_date }}</span></p>
+                            {% else %}
+                                <p class="mb-0" style="font-size: 16px;">Purchasing Date : <span style="font-size: 15px;">{{ order.purchasing_date }}</span></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-12">
+                            <ul id="progressbar" class="text-center">
+                                <li class="active step0"></li>
+                                {% if order.is_purchased is False %}
+                                    {% if order.is_prepared is True %}
+                                        <li class="active step0"></li>
+                                    {% else %}
+                                        <li class="step0"></li>
+                                    {% endif %}
+                                    {% if order.is_packed is True %}
+                                        <li class="active step0"></li>
+                                    {% else %}
+                                        <li class="step0"></li>
+                                    {% endif %}
+                                    {% if order.is_purchased is True %}
+                                        <li class="active step0"></li>
+                                    {% else %}
+                                        <li class="step0"></li>
+                                    {% endif %}
+                                {% else %}
+                                    <li class="active step0"></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% if order.is_purchased is False %}
+                        <div style="display:flex;flex-direction:row;justify-content:space-around;width:100%;margin:auto;" class="">
+                    {% else %}
+                        <div style="display:flex;flex-direction:row;justify-content:space-around;width:52%;" class="">
+                    {% endif %}
+                        <div class="row d-flex icon-content text-center"> 
+                            <center>
+                                <img class="icon" src="{% static 'images/list-icon.png' %}">
+                            </center>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Ordered</p>
+                            </div>
+                        </div>
+                        {% if order.is_purchased is False %}
+                            <div class="row d-flex icon-content text-center"> 
+                                <center>
+                                    <img class="icon" src="{% static 'images/cooking.png' %}">
+                                </center>
+                                <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Prepared</p>
+                                </div>
+                            </div>
+                            <div class="row d-flex icon-content text-center"> 
+                                <center>
+                                    <img class="icon" src="{% static 'images/pngegg15.png' %}">
+                                </center>
+                                <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Packed</p>
+                                </div>
+                            </div>
+                            <div class="row d-flex icon-content text-center"> 
+                                <center>
+                                    <img class="icon" src="{% static 'images/tick.png' %}">
+                                </center>
+                                <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Purchased</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="row d-flex icon-content text-center"> 
+                                <center>
+                                    <img class="icon" src="{% static 'images/tick.png' %}">
+                                </center>
+                                <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Purchased</p>
+                                </div>
+                            </div>
+                            <div style="position: absolute;right:100px;" class="row d-flex"> 
+                                <!-- <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Purchased</p>
+                                </div> -->
+                                <a target="_blank" href="/order/invoice/{{order.order_id}}" style="font-size:15px;padding:10px;" class="btn btn-lg btn-warning"><i class="fas fa-receipt text-dark"></i> Generate Receipt</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <br />
+                {% empty %}
+                    <div class='text-center'>
+                        <p style='text-align:center;border:none;line-height:77vh;font-size:17px;'>No Existing Orders Found</p>
+                    </div>
+            {% endfor %}
+        </div> 
+        <div class="old-orders">
+            <div class="order-status-check">
+
+            </div>
+            <div class="order-details">
+                
+            </div>
+        </div>
+    </div>
+</section>
+{% include "footer.html" %}

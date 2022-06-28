@@ -1,0 +1,162 @@
+{% include "./admin-header.html" %}
+<div class="add-food-container">
+    <div class="page-wrapper p-t-100 p-b-50">
+        <div class="wrapper wrapper--w900">
+            <div class="card card-6">
+                <div class="card-heading">
+                    <h2 class="title">FOOD DETAILS</h2>
+                </div>
+                <div class="card-body">
+                    {% if status %}
+                        <p class="add-food-status {{status}}">{{occur}}</p>
+                    {% endif %}
+                    <form action="/admin/add-food/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="name">Food Name <span style="color:red">*</span></div>
+                            <div class="value">
+                                <input required class="input--style-6" type="text" placeholder="Enter Name" name="food_name">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Price <span style="color:red">*</span></div>
+                            <div class="value">
+                                <input required class="input--style-6" type="number" step=".01" min="0" placeholder="Price Per Item" name="food_rate_per_quantity">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Total Quantity <span style="color:red">*</span></div>
+                            <div class="value">
+                                <input required class="input--style-6" type="number" min="0" placeholder="Total Available Quantity of Food" name="food_available_total_quantity">
+                            </div>
+                        </div> 
+                        <div class="form-row">
+                            <div class="name">Expiry Days (Count) <span style="color:red">*</span></div>
+                            <div class="value">
+                                <input required class="input--style-6" type="number" step="1" min="1" placeholder="Enter the count of Expiry Days" name="expiry_days_count">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <style>
+                                .checkbox{
+                                    height: 80px;
+                                    padding: 20px;
+                                    display: flex;
+                                    background: #fff;
+                                    align-items: center;
+                                    border-radius: 5px;
+                                    /* box-shadow: 5px 5px 30px rgba(0,0,0,.2); */
+                                    justify-content: space-between;
+                                }
+                                .checkbox input{
+                                    outline: none;
+                                    height: 40px;
+                                    width: 90px;
+                                    border-radius: 50px;
+                                    -webkit-appearance: none;
+                                    position: relative;
+                                    background: #e6e6e6;
+                                    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                                    cursor: pointer;
+                                    transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                                }
+                                .checkbox input:checked{
+                                    background:orange;
+                                }
+                                .checkbox input:before{
+                                    position: absolute;
+                                    content: "";
+                                    left: 0;
+                                    height: 100%;
+                                    width: 40px;
+                                    background: linear-gradient(#fff,#f2f2f2,#e6e6e6,#d9d9d9);
+                                    box-shadow: 0 2px 5px rgba(0,0,0,.2);
+                                    border-radius: 50px;
+                                    transform: scale(0.85);
+                                    transition: left 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                                }
+                                input:checked:before{
+                                    left:50px;
+                                }
+                                .checkbox .text:before{
+                                    content: "Not Available";
+                                    font-weight: 500;
+                                    color: #bfbfbf;
+                                }
+                                input:checked ~ .text:before{
+                                    color: #ff340b;
+                                    content: "Available";
+                                    padding-right:41px;
+                                }
+                            </style>
+                            <div class="name">Food Availability? <span style="color:red">*</span></div>
+                            <div class="value" style="font-size:15px;margin-top:10px;display:flex;flex-direction:row;justify-content:space-evenly;"> 
+                                <div class="checkbox">
+                                    <input type="checkbox" name="is-food-available" id="click">
+                                    <label for="click" class="text"></label>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="form-row">
+                            <div class="name" for="select-category">Food Category <span style="color:red">*</span></div>
+                            <select name="food_category" id="select-category">
+                                <option value="breakfast">BreakFast</option>
+                                <option value="brunch">Brunch</option>
+                                <option value="lunch">Lunch</option>
+                                <option value="snacks">Snacks</option>
+                                <option value="dinner">Dinner</option>
+                            </select>
+                        </div>                         
+                        <div class="form-row">
+                            <div class="name">Upload Food Image <span style="color:red">*</span></div>
+                            <div class="value">
+                                <div class="input-group js-input-file">  
+                                    <div class="drag-area">
+                                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                        <header>Drag & Drop to Upload File</header>
+                                        <span>OR</span>
+                                        <button type="button">Browse File</button><br />
+                                    </div>
+                                    <input required class="image-data-input" name="food-cover-image" type="file" hidden>
+                                </div>
+                                <div class="label--desc file-dynamic-section">Upload your Food Image Here!</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Food Description</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <textarea class="textarea--style-6" name="food_description" placeholder="Describe Here!"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Food Incredients</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <textarea class="textarea--style-6" name="food_ingredients" placeholder="Type the Food Incredients Here!"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="name">Pros of the Food</div>
+                            <div class="value">
+                                <div class="input-group">
+                                    <textarea class="textarea--style-6" name="food_pros" placeholder="Type the Advantage of the Food"></textarea>
+                                </div>
+                            </div>
+                        </div> 
+                        <br />
+                        <div style="display:flex;flex-direction:row;justify-content:space-around;">
+                            <button class="btn btn--radius-2 btn--red" onclick="resetForm();" type="button">Reset</button>
+                            <button class="btn btn--radius-2 btn--blue-2" name="add-new-food-item" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br />
+            <br />
+        </div>
+    </div>
+</div>
+{% include "./admin-footer.html" %}

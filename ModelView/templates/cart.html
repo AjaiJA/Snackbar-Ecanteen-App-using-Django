@@ -1,0 +1,68 @@
+{% include "header.html" %}
+{% load staticfiles %}
+<section class="cart-container">
+    <!-- <h1>My Cart</h1> -->
+	<div class="cart">
+		<div class="products">
+			<div class="cart-buy-product products">
+    			<h1>My Cart</h1>
+            	{% for item in cartItems %}
+					<div draggable="true" data-target="{{item.Food_id}}" class="draggable product cart-product-item-list">
+						<div>
+							<img loading="lazy" height="170px" width="270px" src="{% static 'images/load1.gif' %}">
+						</div>
+						<div class="product-info">
+							<h3 class="product-name">----</h3>
+							<h4 class="product-offer"> 
+								<span style="font-size: 15px;">
+									<i style="color:#ffa600;" class="fas fa-star"></i>
+									<span>3.5</span>
+								</span> &nbsp;
+								<span class="old-rate" style="text-decoration: line-through;opacity:0.6;">₹--</span> 
+								<span class="current-rate" style="font-weight: lighter;">₹--</span>
+							</h4>
+							<h4 class="product-price"></h4>
+							<p class="product-quantity">Quantity : <input class="cart-quantity-input" style="width:100px;" type="number" min="1" value="1"></p>
+							<p style="padding-top:10px;" class="product-quantity">Total Cost : <span class="total-cost" data-target="0">₹--</span></p>
+							<p class="" style="font-size:11px;color:green;font-weight: bolder;">Expires within <span class="expiry-date"></span> from the date of purchase</p>
+							<a href="/remove-cart/{{item.Food_id}}" class="product-remove">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+								<span class="remove">Remove</span>
+							</a>
+						</div>
+					</div>
+					{% empty %}
+						<div class='text-center'>
+							<p style='text-align:center;border:none;line-height:20vh;font-size:17px;'>Empty</p>
+						</div>    
+				{% endfor %}
+			</div>
+			<div class="save-later-container products">
+				<h1>Add for Later</h1>
+			</div>
+		</div>
+		<div class="cart-total">
+			<p class="status-display" style="font-size:17px;text-align:center;display:flex;justify-content:center;align-items:center;"></p>
+			<p>
+				<span><label for="order-date-time">Date</label></span>
+				<span>
+					<input type="datetime-local" min="" max="" value="" id="order-date-time">
+	   			</span>
+			</p>
+			<p>
+				<span>Number of Items</span>
+				<span class="total-items">--</span>
+			</p>
+			<p>
+				<span>Total Price</span>
+				<span class="total-cost-checkout">₹ --</span>
+			</p>
+			<!-- <p>
+				<span>You Save</span>
+				<span>₹ 1,000</span>
+			</p> -->
+			<a href="#" onclick="proceedPayment(event);">Proceed to Checkout</a>
+		</div>
+	</div>
+</section>
+{% include "footer.html" %}

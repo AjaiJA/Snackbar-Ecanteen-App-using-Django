@@ -1,0 +1,107 @@
+{% if user.is_authenticated %}
+    {% if username == "snackbar" %} 
+        {% include "./admin-pages/admin-header.html" %}
+    {% else %}
+        {% include "header.html" %}
+    {% endif %}
+{% endif %}
+{% load staticfiles %}
+<section class="order-list-container">
+    {% if status %}
+        <p class="update-para-status" style="text-align:center;color:orange;">{{status}}</p>
+        <script>
+            setTimeout(()=>document.querySelector('.update-para-status').innerHTML="", 5000);
+        </script>
+    {% endif %}
+    <h1>Details of Order :</h1>
+	<div class="order-item-list">
+		<table class="styled-table">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>Food Items</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in orderlist %}
+                    {% if forloop.counter|divisibleby:2 %}
+                    <tr class="active-row">
+                    {% else %}
+                    <tr>
+                    {% endif %}
+                        <td>{{item.Food_Name}}</td>
+                        <td style="text-align:center;">{{item.Price}}</td>
+                        <td style="text-align:center;">{{item.Quantity}}</td>
+                        <td style="text-align:center;">{{item.Total_Cost}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot style="font-size:15px;">
+                <tr style="max-width:100%;margin:auto;text-align:center;">
+                    <td colspan="2">Ordered Date :
+                        {{orderdetails.ordered_date}}
+                    </td>
+                    {% if orderdetails.is_purchased is True %}
+                    <td colspan="2">Purchased Date :
+                        {{orderdetails.purchased_date}}
+                    </td>
+                    {% else %}
+                    <td colspan="2">Purchasing Date :
+                        {{orderdetails.purchasing_date}}
+                    </td>
+                    {% endif %}
+                </tr>
+                <tr style="text-align:center;">
+                    <td colspan="2">Status : 
+                        {% if orderdetails.is_purchased is True %}
+                            Purchased
+                        {% else %}
+                            Not Purchased
+                        {% endif %}
+                    </td>
+                    <td colspan="2">Total Cost : ₹{{orderdetails.total_price}}</td>
+                </tr>
+                {% if user.is_authenticated %}
+                    {% if username == "snackbar" %} 
+                    <tr>
+                        <style>
+                            .provide-btn:hover {
+                                background: #eb3746;
+                            }
+                            .provided-btn:hover {
+                                background: #4dae3c;
+                            }
+                        </style>
+                        <td colspan="4" style="text-align:center;">
+                            {% if orderdetails.is_prepared is True %}
+                                <a class="provided-btn" style="background: #57b846;text-decoration:none;display: inline-block;line-height: 40px;padding: 0 30px;transition: all 0.4s ease;cursor: pointer;font-size: 15px;text-transform: capitalize;font-weight: 700;color: #fff;font-family: inherit; border-radius: 3px;">Prepared</a>
+                            {% else %}
+                                <a class="provide-btn" href="/admin/orderPrepared/{{orderdetails.order_id}}" style="background: #ff4b5a;text-decoration:none;display: inline-block;line-height: 40px;padding: 0 30px;transition: all 0.4s ease;cursor: pointer;font-size: 15px;text-transform: capitalize;font-weight: 700;color: #fff;font-family: inherit; border-radius: 3px;">Prepare</a>
+                            {% endif %}
+                            {% if orderdetails.is_packed is True %}
+                                <a class="provided-btn" style="background: #57b846;text-decoration:none;display: inline-block;line-height: 40px;padding: 0 30px;transition: all 0.4s ease;cursor: pointer;font-size: 15px;text-transform: capitalize;font-weight: 700;color: #fff;font-family: inherit; border-radius: 3px;">Packed</a>
+                            {% else %}
+                                <a class="provide-btn" href="/admin/orderPacked/{{orderdetails.order_id}}" style="background: #ff4b5a;text-decoration:none;display: inline-block;line-height: 40px;padding: 0 30px;transition: all 0.4s ease;cursor: pointer;font-size: 15px;text-transform: capitalize;font-weight: 700;color: #fff;font-family: inherit; border-radius: 3px;">Pack</a>
+                            {% endif %}
+                            {% if orderdetails.is_purchased is True %}
+                                <a class="provided-btn" style="background: #57b846;text-decoration:none;display: inline-block;line-height: 40px;padding: 0 30px;transition: all 0.4s ease;cursor: pointer;font-size: 15px;text-transform: capitalize;font-weight: 700;color: #fff;font-family: inherit; border-radius: 3px;">Purchased</a>
+                            {% else %}
+                                <a class="provide-btn" href="/admin/purchasedOrder/{{orderdetails.order_id}}" style="background: #ff4b5a;text-decoration:none;display: inline-block;line-height: 40px;padding: 0 30px;transition: all 0.4s ease;cursor: pointer;font-size: 15px;text-transform: capitalize;font-weight: 700;color: #fff;font-family: inherit; border-radius: 3px;">Purchase</a>
+                            {% endif %}
+                        </td>   
+                    </tr>
+                    {% endif %}
+                {% endif %}
+            </tfoot>
+        </table>
+    </div>
+</section><br><br>
+{% if user.is_authenticated %}
+    {% if username == "snackbar" %} 
+        {% include "./admin-pages/admin-footer.html" %}
+    {% else %}
+        {% include "footer.html" %}
+    {% endif %}
+{% endif %}

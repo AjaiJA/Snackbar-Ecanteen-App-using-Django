@@ -1,0 +1,105 @@
+{% include "header.html" %}
+{% load staticfiles %}
+<div class="profile-container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                {% if userInfo.profile_image != "" %}
+                    <img class="mt-5 img-profile" style="cursor:pointer;border-radius: 50%;height:200px;width:200px;" src="/Media/{{userInfo.profile_image}}">
+                {% else %}
+                    <img class="mt-5 img-profile" style="cursor:pointer;border-radius: 50%;height:200px;width:200px;" src="/Media/users/userSnackBar2021.png">
+                {% endif %}
+                <span style="text-transform:lowercase;color:orangered;" class="font-weight-bold">@{{userInfo.username}} <i class="fas fa-badge-check"></i></span>
+                <span style="text-transform:lowercase;font-size:medium;font-style: italic;" class="text-black">{{userInfo.email}}</span>
+                <span style="font-size:medium;font-style: italic;">{{userInfo.mobile_no}}</span>
+            </div>
+        </div>
+        <div class="col-md-5"> 
+            <form action="/profile-update/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div style="padding-top:10px;padding-bottom: 30px;">   
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div {% if message.tags %} class="alert alert-sm alert-{{ message.tags }}"{% endif %}>
+                                <p class="text-center">{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="text-right">Profile Settings</h1>
+                    </div>
+                    <div class="row mt-2">
+                        <input style="display:none;" type="file" class="profile-image-input" name="profileimage">
+                        <div class="col-md-6">
+                            <label class="labels">First Name</label>
+                            <input style="height:40px;" type="text" class="form-control" name="firstname" placeholder="enter first name" value="{{ userInfo.first_name }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Last Name</label>
+                            <input style="height:40px;" type="text" class="form-control" name="lastname" value="{{ userInfo.last_name }}" placeholder="enter last name">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Email ID</label>
+                            <input readonly style="height:40px;text-transform: lowercase;" type="text" name="email" class="form-control" placeholder="enter email id" value="{{ userInfo.email }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="labels">Mobile Number</label>
+                            <input readonly style="height:40px;" type="text" class="form-control" name="mobileno" placeholder="enter phone number" value="{{ userInfo.mobile_no }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label form="address" class="labels">Address</label>
+                            <textarea name="address" placeholder="enter address" class="form-control" id="address" rows="3">{{ userInfo.Address }} </textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label class="labels">Pincode</label>
+                            <input style="height:40px;" type="text" class="profile-pincode form-control" name="pincode" value="{{ userInfo.pincode }}" placeholder="enter pincode">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">Country</label>
+                            <input style="height:40px;" type="text" class="profile-country form-control" name="country" placeholder="enter country" value="{{ userInfo.Country }}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label class="labels">State / Region</label>
+                            <input style="height:40px;" type="text" class="profile-state form-control" name="state" value="{{ userInfo.State }}" placeholder="enter state">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labels">District</label>
+                            <input style="height:40px;" type="text" class="profile-district form-control" name="district" placeholder="enter district" value="{{ userInfo.District }}">
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        <button style="height:40px;" class="btn btn-primary btn-lg profile-button" type="submit">Save Profile</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <div class="py-5 tags-recommend">
+               <div class="d-flex justify-content-between align-items-center">
+                    <span style="color:orangered;">Add Tags</span>
+                    <span style="cursor:pointer;" class="border px-3 p-1 save-tag"><i class="fa fa-tag"></i>&nbsp;Save</span>
+                </div><br>
+                <div class="card-body mb-5 shadow border-0 col-md-12">
+                    <div class="head">
+                        <h3>Tags</h3>
+                        <i class="fa fa-question-circle-o"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" class="tags-input" id="myInput">
+                        <i class="fa fa-tags"></i>
+                    </div>
+                    <div class="tags">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "footer.html" %}

@@ -1,0 +1,110 @@
+{% include "./admin-header.html" %}
+<div class="orders">
+    <div class="page-wrapper p-t-100 p-b-50">
+        <div class="wrapper wrapper--w960">
+            <div class="card card-6">
+                <div class="card-heading">
+                    <h2 class="title">List of Orders</h2>
+                </div> 
+                <div class="view-search-admin">
+                    <input type="checkbox" id="check">
+                    <div class="search-box">
+                        <input type="text" placeholder="Type here...">
+                        <label for="check" class="icon">
+                            <i class="fas fa-search"></i>
+                        </label>
+                    </div> 
+                </div><br />
+                <div style="border:none;" class="view-items-db">
+                    <p style="line-height:50px;font-size: 16px;font-weight: bolder;font-style:italic;text-align:center;color:orange;" class="food-updated-status-para"></p>   
+                </div>
+                <table class="styled-table">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th>Username</th>
+                            <th>No.of Items</th>
+                            <th>Total Price</th>
+                            <th>Ordered Date</th>
+                            <th>Purchasing Date</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orders in orderslist %}
+                            {% if forloop.counter|divisibleby:2 %}
+                            <tr class="active-row">
+                            {% else %}
+                            <tr>
+                            {% endif %}
+                                <td style="text-align:center;" class="user-name-column">{{orders.order_id}}</td>
+                                <td style="text-align:center;">{{orders.no_of_items}}</td>
+                                <td style="text-align:center;">{{orders.total_price}}</td>
+                                <td style="text-align:center;">{{orders.ordered_date}}</td>
+                                <td style="text-align:center;">{{orders.purchasing_date}}</td>
+                                <td style="text-align:center;">
+                                    <a href="order-lists/{{orders.order_id}}" class="btn btn--radius-2 btn--pink-orange">View</a>
+                                </td>
+                                <!-- href="#open-modal" -->
+                                <div id="open-modal" class="modal-window">
+                                    <div>
+                                        <a href="#" title="Close" class="modal-close">Close</a>
+                                        <h1></h1>
+                                        <div></div>
+                                        <div><small>Check out</small></div>
+                                    </div>
+                                </div>
+                            </tr>
+                            {% empty %}
+                            <tr class='text-center'>
+                                <td colspan='14' style='text-align:center;border:none;line-height:10vh;font-size:17px;'>No Data Available</td>
+                            </tr>  
+                        {% endfor %}
+                    </tbody>
+                    <tfoot style="font-size:15px;">
+                    </tfoot>
+                </table>
+                <div class="card-heading">
+                    <h2 class="title">Purchased Orders</h2>
+                </div>
+                <table class="styled-table">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th>Username</th>
+                            <th>No.of Items</th>
+                            <th>Total Price</th>
+                            <th>Ordered Date</th>
+                            <th>Purchased Date</th>
+                            <th>View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for purchased in purchasedlist %}
+                            {% if forloop.counter|divisibleby:2 %}
+                            <tr class="active-row">
+                            {% else %}
+                            <tr>
+                            {% endif %}
+                                <td style="text-align:center;" class="user-name-column">{{purchased.order_id}}</td>
+                                <td style="text-align:center;">{{purchased.no_of_items}}</td>
+                                <td style="text-align:center;">{{purchased.total_price}}</td>
+                                <td style="text-align:center;">{{purchased.ordered_date}}</td>
+                                <td style="text-align:center;">{{purchased.purchased_date}}</td>
+                                 <td style="text-align:center;">
+                                    <a href="order-lists/{{purchased.order_id}}" class="btn btn--radius-2 btn--pink-orange">View</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr class='text-center'>
+                                <td colspan='14' style='text-align:center;border:none;line-height:10vh;font-size:17px;'>No Data Available</td>
+                            </tr>                     
+                        {% endfor %}
+                    </tbody>
+                    <tfoot style="font-size:15px;">
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <br><br><br>
+    </div>
+</div>
+{% include "./admin-footer.html" %}

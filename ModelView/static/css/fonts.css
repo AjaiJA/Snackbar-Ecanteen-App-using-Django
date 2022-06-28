@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Trade+Winds&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Are+You+Serious&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,700");
+@import url("https://fonts.googleapis.com/css?family=Metal+Mania");
+@import url("https://fonts.googleapis.com/css2?family=Stick+No+Bills&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fleur+De+Leah&family=Grechen+Fuemen&family=Grey+Qo&display=swap");
+@font-face {
+  font-family: "Booter - Zero Zero";
+  src: url("Fonts/Booter - Zero Zero.woff") format("woff"), url("Fonts/Booter - Zero Zero.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Poppins-Regular;
+  src: url("./fonts/poppins/Poppins-Regular.ttf");
+}
+
+@font-face {
+  font-family: Poppins-Bold;
+  src: url("./fonts/poppins/Poppins-Bold.ttf");
+}
+
+@font-face {
+  font-family: Poppins-Medium;
+  src: url("./fonts/poppins/Poppins-Medium.ttf");
+}
+
+@font-face {
+  font-family: Montserrat-Bold;
+  src: url("./fonts/montserrat/Montserrat-Bold.ttf");
+}
+/*# sourceMappingURL=fonts.css.map */

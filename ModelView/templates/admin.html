@@ -1,0 +1,222 @@
+{% include "./admin-pages/admin-header.html" %}
+    <div class="admin-dashboard">
+        <div class="chart">
+            <div class="title">
+                <h3><a href="/" class="logo"><i class="fas fa-gifts"></i>SnackBar</a></h3>
+                <h5>
+                    <a style="text-decoration:none;" href="mailto:snackbarofficial@gmail.com">
+                        <i style="color:orangered;" class="fa fa-envelope"></i>
+                        snackbarofficial@yahoo.com
+                    </a>
+                </h5>
+            </div>
+            <br>
+            <div class="grid-count">
+                <div class="count-display user-count">
+                    <h4>No.of Users</h4>
+                    <h2 class='total-count'>{{ customer_count }}</h2>
+                </div>
+                <div class="count-display items-count">
+                    <h4>No.of Food Items</h4>
+                    <h2 class='total-count'>{{items_count}}</h2>
+                </div>
+                <div class="count-display order-count">
+                    <h4>Total Orders</h4>
+                    <h2 class='total-count'>{{order_count}}</h2>
+                </div>
+                <div class="count-display order-progress-count">
+                    <h4>Orders Under Progress</h4>
+                    <h2 class='total-count'>{{progress_count}}</h2>
+                </div>
+            </div>
+            <br><br>
+            <div class="chart-display d-flex flex-direction-row justify-content-around">
+                <div id="piechart_3d">
+                    <h4 class="text-center" style="line-height:50px;">Dishes Quantity</h4>
+                    <canvas id="myChart1" width="300" height="200"></canvas>
+                </div>      
+                <div id="piechartbooks_3d">
+                    <h4 class="text-center" style="line-height:50px;">Category</h4>
+                    <canvas id="orderChart" width="300" height="200"></canvas>
+                </div>
+            </div>
+            <br><br><br>
+            <div class="price-detail-data">
+                <table class="table table-responsive" style="width:85%;margin:auto;font-size:15px;">
+                    <h1 class="text-center" style="font-size:20px;text-decoration: underline;">Dishes List and Status</h1>
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col">SL.No</th>
+                            <th scope="col">Dish Name</th>
+                            <th class="text-center" scope="col">Price</th>
+                            <th class="text-center" scope="col">Total Quantity</th>
+                            <th class="text-center" scope="col">Sold Quantity</th>
+                            <th class="text-center" scope="col">Wastage Quantity</th>
+                            <th class="text-center" scope="col">Available Quantity</th>
+                        </tr>
+                    </thead> &nbsp;
+                    <tbody style="line-height:50px;">
+                        {% load mathfilters %}
+                        {% for item in food_items %}
+                            <tr>
+                                <td scope="row" class="text-center">{{ forloop.counter }}</td>
+                                <td scope="row">{{ item.food_name }}</td>
+                                <td scope="row" class="text-center">{{ item.food_rate_per_quantity }}</td>
+                                <td scope="row" class="text-center">{{ item.food_total_quantity }}</td>
+                                <td scope="row" class="text-center">
+                                    {% if item.till_now_ordered_total_quantity == 0 %}
+                                        -
+                                    {% else %}
+                                        {{ item.till_now_ordered_total_quantity }}
+                                    {% endif %}
+                                <td scope="row" class="text-center">{{ item.food_total_quantity|sub:item.till_now_ordered_total_quantity|sub:item.food_available_total_quantity }}</td>
+                                <td scope="row" class="text-center">{{ item.food_available_total_quantity }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr class='text-center'>
+                                <td colspan='14' style='border:none;line-height:50vh;'>No Records Found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <br><br><br>
+            </div>
+        </div>
+        <script>
+            let delayed1;
+            var ctx = document.getElementById('myChart1').getContext('2d');
+            var myChart1 = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: [{% for items in food_items %} '{{items.food_name}}', {% endfor %}],
+                    datasets: [{
+                        label: 'Number of Products',
+                        data: [
+                            {% for items in food_items %} 
+                                {{ items.food_available_total_quantity}}, 
+                            {% endfor %}
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        tension:0.5,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive:true,
+                    hitRadius:30,
+                    hoverRadius:12,
+                    animation: {
+                        onComplete:()=>{
+                            delayed1=true
+                        },
+                        delay:(context)=>{
+                            let delay=0
+                            if(context.type=="data" && context.mode=="default" && !delayed1) {
+                                delay=context.dataIndex*300 + context.datasetIndex*100
+                            }
+                            return delay
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            let delayed2;
+            var order_ctx = document.getElementById('orderChart').getContext('2d');
+            var orderChart = new Chart(order_ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ["Breakfast","Brunch","Lunch","Dinner","Snacks"],
+                    datasets: [{
+                        label: 'Number of Products',
+                        data: [
+                           {{breakfast}},{{brunch}},{{lunch}},{{dinner}},{{snacks}}
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        tension:0.5,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive:true,
+                    hitRadius:30,
+                    hoverRadius:12,
+                    animation: {
+                        onComplete:()=>{
+                            delayed2=true
+                        },
+                        delay:(context)=>{
+                            let delay=0
+                            if(context.type=="data" && context.mode=="default" && !delayed2) {
+                                delay=context.dataIndex*300 + context.datasetIndex*100
+                            }
+                            return delay
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+    </div>
+<!--     <script>
+        var counters=document.querySelectorAll('.total-count');
+        var speed=20000;
+        counters.forEach(counter=>{
+            var updateCount=()=>{
+                var target=+Number(counter.innerText);
+                var count=+counter.innerText;
+                var inc=target/speed;
+                if(count<target){
+                counter.innerText=Math.ceil(count+inc);
+                setTimeout(updateCount,1);
+                }else{
+                    counter.innerText=target;
+                }
+
+            }
+            updateCount();
+        });
+    </script> -->
+{% include "./admin-pages/admin-footer.html" %}

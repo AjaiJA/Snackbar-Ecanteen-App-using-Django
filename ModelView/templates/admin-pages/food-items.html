@@ -1,0 +1,39 @@
+{% include "./admin-header.html" %}
+<div class="food-items-available">
+    <div class="page-wrapper p-t-100 p-b-50">
+        <div class="wrapper wrapper--w960">
+            <div class="card card-6">
+                <div class="card-heading">
+                    <h2 class="title">List of Food Items</h2>
+                </div>
+                <div style="border:none;" class="card-body view-items-db">
+                   <center>
+                       <input class="input--style-6 admin-search-food" type="text" placeholder="Search Food" name="food_name">
+                    </center>
+                    <br />
+                    <p style="font-size: 16px;font-weight: bolder;font-style:italic;text-align:center;color:orange;" class="food-updated-status-para"></p>
+                </div>                     
+                <div class="view-card-section">
+                    {% for item in itemLists %}
+                        <div class="box box-{{ forloop.counter }}">
+                            <form onsubmit="updateFoodItem(event);" method="POST">
+                                {% csrf_token %}
+                                <img src="/Media/{{item.food_image}}" alt="{{item.food_name}}">
+                                <h3 style="text-align: center"><input class="input--style-6 food-name-field" type="text" value="{{item.food_name}}" placeholder="Update Name" name="food_name"></h3>
+                                <div class="stars">
+                                    <span>4.3<i class="fas fa-star"></i></span>
+                                </div>
+                                <p class="product-quantity">Price &nbsp;&nbsp; : &nbsp;&nbsp; &nbsp; <i style="color:red;" class="fas fa-rupee"></i><input class="food-rate-per-quantity" type="number" value="{{item.food_rate_per_quantity}}" step=".01" min="0" name="food_rate_per_quantity"></p>
+                                <p class="product-quantity">Quantity : &nbsp; &nbsp;&nbsp; <input class="food-available-total-quantity" type="number" value="{{item.food_available_total_quantity}}" min="0"></p>
+                                <input type="hidden" name="Food_id" class="Food_id" value="{{item.food_id}}" />
+                                <br/>
+                                <button type="submit" class="btn btn--radius-2 btn--red">Update</button>
+                            </form>
+                        </div>   
+                    {% endfor %}   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "./admin-footer.html" %}

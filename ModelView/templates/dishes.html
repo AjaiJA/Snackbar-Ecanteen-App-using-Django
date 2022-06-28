@@ -1,0 +1,59 @@
+{% include "header.html" %}
+{% load staticfiles %}
+{% comment %} {% ifequal url "add-food" %}
+    {% include "admin-pages/add-food.html" %}
+{% endifequal %}
+{% ifequal url "food-items" %}
+    {% include "admin-pages/food-items.html" %}
+{% endifequal %}
+{% ifequal url "dashboard" %}
+    {% include "admin-pages/dashboard.html" %}
+{% endifequal %} {% endcomment %}
+<section class="dish-container">     
+    <div class="dishes" id="dishes">
+        <h1 style="line-height:70px;" class="dish-sub-heading"> 
+            {% if menu %}
+                {{menu}}
+            {% else %}
+                our dishes
+            {% endif %}
+        </h1>
+        <div class="box-container">
+            {% for item in itemLists %}
+                <div class="box dish-cart-img box-{{ forloop.counter }}">
+                    <form method="POST" onsubmit="addToCart(event);">
+                        {% csrf_token %}
+                        <!-- <a href="#" class="fas fa-heart"></a> -->
+                        <!-- <a href="#" class="fas fa-eye"></a> -->
+                        <img src="/Media/{{item.food_image}}" alt="{{item.food_name}}">
+                        <h3>{{item.food_name}}</h3>
+                        <!--<div class="stars">-->
+                            <!--<span>4.3<i class="fas fa-star"></i></span>-->
+                            <!-- <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i> -->
+                        <!--</div>-->
+                        <span><i style="color:orange;" class="fas fa-rupee"></i>{{item.food_rate_per_quantity}}</span>
+                        <input type="hidden" name="Food_id" class="Food_id" value="{{item.food_id}}" />
+                        <input type="hidden" name="User_id" class="User_id" value="{{user.User_id}}" />
+                        <br/> 
+                        <button type="submit" class="cart-button">
+                            <span class="add-to-cart">Add to cart</span>
+                            <span class="added">Added</span>
+                            <i class="fas fa-shopping-cart"></i>
+                            <i class="fas fa-box"></i>
+                        </button>
+                        <!-- <button class="buy--btn">ADD TO CART</button> -->
+                    </form>
+                </div> 
+                    {% comment %} <td><a class="btn btn-warning" href="/edit/{{ item.id }}"><i class="fas fa-edit"></i> Edit</a></td> {% endcomment %}
+                {% empty %}
+                    <div class='text-center'>
+                        <p style='text-align:center;border:none;line-height:50vh;font-size:17px;'>No items Found</p>
+                    </div>                     
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% include "footer.html" %}
